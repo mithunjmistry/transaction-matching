@@ -42,6 +42,7 @@
                               <th scope="col">Status</th>
                               <th scope="col">Trade Date</th>
                               <th scope="col"></th>
+                              <th scope="col"></th>
                             </tr>
                           </thead>
                           <tbody>
@@ -59,6 +60,11 @@
                               </td>
                             <td>{{ g.date|date:"M d, Y" }}</td>
                             <td><a href="/transaction/{{ g.id }}">View</a></td>
+                            <td>
+                                {% if g.comments %}
+                                    <i class="fas fa-comments"></i>
+                                {% endif %}
+                            </td>
                             </tr>
                           {% endfor %}
                           </tbody>

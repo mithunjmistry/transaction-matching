@@ -134,7 +134,9 @@ def upload_balances(request):
         alert = True
     remaining_files = AllFiles.objects.filter(uploaded=0)
     all_files = AllFiles.objects.all()
-    return render(request, "uploads.html", {'remaining_files': remaining_files, 'all_files': all_files, 'alert': alert})
+    no_remaining_files = remaining_files.count() == 0
+    return render(request, "uploads.html", {'remaining_files': remaining_files, 'all_files': all_files, 'alert': alert,
+                                            'no_remaining_files': no_remaining_files})
 
 
 def clear_database(request):
