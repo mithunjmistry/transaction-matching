@@ -19,10 +19,10 @@ from waterisland.views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^upload/', upload_balances),
-    url(r'^currency/', currency_matching),
-    url(r'^institution/', institution_matching),
-    url(r'^test/', test),
-    url(r'^transaction/(\w+)/', transaction_detail),
-    url(r'^cleardb/', clear_database),
+    url(r'^upload/', upload_balances, name='upload'),
+    url(r'^currency/', currency_matching, name='currency'),
+    url(r'^institution/', institution_matching, name='institution'),
+    url(r'^test/', test, name='test'),
+    url(r'^transaction/(\w+)/', transaction_detail, name='transaction_detail'),
+    url(r'^cleardb/', clear_database, name='clear_database'),
 ]

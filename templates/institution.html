@@ -8,7 +8,7 @@
               Please upload GS, SSB and Trader Transaction files to see if it matches.
             </div>
         {% else %}
-            <h4 class="margin-bottom-two">Institute Transaction Matching</h4>
+            <h4 class="margin-bottom-two text-muted">Institute Transaction Matching</h4>
             <div id="accordion">
               <div class="card">
                 <div class="card-header" id="headingOne">
@@ -18,6 +18,7 @@
                     </button>
                   </h5>
                 </div>
+              {% load app_filters %}
 
                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                   <div class="card-body">
@@ -49,8 +50,8 @@
                           {% for g in gs %}
                             <tr>
                               <td>{{ g.institution.institution }}</td>
-                              <td>{% firstof g.total '0.00' %}</td>
-                              <td>{% firstof g.trader_total '0.00' %}</td>
+                              <td>{% firstof g.total|format_amount '0.00'|format_amount %}</td>
+                              <td>{% firstof g.trader_total|format_amount '0.00'|format_amount %}</td>
                               <td>
                                   {% ifequal g.total g.trader_total %}
                                     <span class="matched-transaction">matched</span>
@@ -110,8 +111,8 @@
                           {% for s in ssb %}
                             <tr>
                               <td>{{ s.institution.institution }}</td>
-                              <td>{% firstof s.total '0.00' %}</td>
-                              <td>{% firstof s.trader_total '0.00' %}</td>
+                              <td>{% firstof s.total|format_amount '0.00'|format_amount %}</td>
+                              <td>{% firstof s.trader_total|format_amount '0.00'|format_amount %}</td>
                               <td>
                                 {% ifequal s.total s.trader_total %}
                                     <span class="matched-transaction">matched</span>
