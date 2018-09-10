@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^test/', test, name='test'),
     url(r'^transaction/(\w+)/', transaction_detail, name='transaction_detail'),
     url(r'^cleardb/', clear_database, name='clear_database'),
+    url(r'^$', home_page, name='home_page'),
 ]

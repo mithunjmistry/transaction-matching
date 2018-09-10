@@ -122,6 +122,10 @@ def transaction_upload_handler(file_name, df):
     f.save()
 
 
+def home_page(request):
+    return redirect('/upload/')
+
+
 def upload_balances(request):
     alert = False
     if request.POST:
