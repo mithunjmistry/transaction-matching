@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+        {% if error %}
+            <div class="alert alert-info" role="alert">
+              Please upload GS, SSB and Trader Transaction files to see if it matches.
+            </div>
+        {% else %}
+            <h4 class="margin-bottom-two">Institute Transaction Matching</h4>
+            <div id="accordion">
+              <div class="card">
+                <div class="card-header" id="headingOne">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      GS
+                    </button>
+                  </h5>
+                </div>
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                  <div class="card-body">
+                      <table border="0" cellspacing="5" cellpadding="5">
+                        <tbody>
+                            <tr>
+                                <td>Minimum Date:</td>
+                                <td><input name="min" id="min" type="text"></td>
+                            </tr>
+                            <tr>
+                                <td>Maximum Date:</td>
+                                <td><input name="max" id="max" type="text"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table display" width="100%" id="example">
+                          <thead class="thead-light">
+                            <tr>
+                              <th scope="col">Institution Name</th>
+                              <th scope="col">Balance</th>
+                              <th scope="col">Water Island Balance</th>
+                              <th scope="col">Status</th>
+                              <th scope="col">Trade Date</th>
+                              <th scope="col"></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          {% for g in gs %}
+                            <tr>
+                              <td>{{ g.institution.institution }}</td>
+                              <td>{% firstof g.total '0.00' %}</td>
+                              <td>{% firstof g.trader_total '0.00' %}</td>
+                              <td>
+                                  {% ifequal g.total g.trader_total %}
+                                    <span class="matched-transaction">matched</span>
+                                {% else %}
+                                    <span class="unmatched-transaction">not matched</span>
+                                {% endifequal %}
+                              </td>
+                            <td>{{ g.date|date:"M d, Y" }}</td>
+                            <td><a href="/transaction/{{ g.id }}">View</a></td>
+                            </tr>
+                          {% endfor %}
+                          </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header" id="headingTwo">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                      SSB
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                  <div class="card-body">
+                    <div class="card-body">
+                      <table border="0" cellspacing="5" cellpadding="5">
+                        <tbody>
+                            <tr>
+                                <td>Minimum Date:</td>
+                                <td><input name="min" id="min2" type="text"></td>
+                            </tr>
+                            <tr>
+                                <td>Maximum Date:</td>
+                                <td><input name="max" id="max2" type="text"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table display" width="100%" id="example2">
+                          <thead class="thead-light">
+                            <tr>
+                              <th scope="col">Institution Name</th>
+                              <th scope="col">Balance</th>
+                              <th scope="col">Water Island Balance</th>
+                              <th scope="col">Status</th>
+                              <th scope="col">Trade Date</th>
+                              <th scope="col"></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          {% for s in ssb %}
+                            <tr>
+                              <td>{{ s.institution.institution }}</td>
+                              <td>{% firstof s.total '0.00' %}</td>
+                              <td>{% firstof s.trader_total '0.00' %}</td>
+                              <td>
+                                {% ifequal s.total s.trader_total %}
+                                    <span class="matched-transaction">matched</span>
+                                {% else %}
+                                    <span class="unmatched-transaction">not matched</span>
+                                {% endifequal %}
+                              </td>
+                              <td>{{ s.date|date:"M d, Y" }}</td>
+                              <td><a href="/transaction/{{ s.id }}">View</a></td>
+                            </tr>
+                          {% endfor %}
+                          </tbody>
+                        </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

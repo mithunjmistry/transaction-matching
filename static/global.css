@@ -1,0 +1,34 @@
+.unavailable-file {
+    color: red;
+}
+
+.available-file {
+    color: green;
+}
+
+.margin-bottom-two {
+    margin-bottom: 2.5%;
+}
+
+.matched-transaction{
+    border-radius: 30px;
+    background: green;
+    color: white;
+    padding: 7px;
+    font-size: 0.8em;
+}
+
+.unmatched-transaction{
+    border-radius: 30px;
+    background: indianred;
+    color: white;
+    padding: 7px;
+    font-size: 0.8em;
+}
+
+.delete-icon{
+    border-radius: 30px !important;
+    height: 34px !important;
+    padding: 3px !important;
+    width: 34px !important;
+}

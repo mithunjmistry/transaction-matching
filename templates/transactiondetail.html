@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <div>
+    {% if alert %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          Comment updated successfully.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+    {% endif %}
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Transaction details</h5>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group row">
+                <label for="staticFund" class="col-sm-2 col-form-label">Fund</label>
+                <div class="col-sm-10">
+                  <input type="text" readonly class="form-control-plaintext" id="staticFund" value="LG">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="staticAccount" class="col-sm-2 col-form-label">Account</label>
+                <div class="col-sm-10">
+                  <input type="text" readonly class="form-control-plaintext" id="staticAccount" value="{{ account }}">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="staticAccountTotal" class="col-sm-2 col-form-label">Account Total ($)</label>
+                <div class="col-sm-10">
+                  <input type="text" readonly class="form-control-plaintext" id="staticAccountTotal" value="{{ total }}">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="staticWITotal" class="col-sm-2 col-form-label">Water Island Total ($)</label>
+                <div class="col-sm-10">
+                  <input type="text" readonly class="form-control-plaintext" id="staticWITotal" value="{{ trader_total }}">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="staticException" class="col-sm-2 col-form-label">Exception</label>
+                <div class="col-sm-10">
+                  <input type="text" readonly class="form-control-plaintext" id="staticException" value="${{ exception }}">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="staticStatus" class="col-sm-2 col-form-label">Status</label>
+                <div class="col-sm-10">
+                    <span class="{{ status_class }}">{{ status }}</span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="staticTradeDate" class="col-sm-2 col-form-label">Trade Date</label>
+                <div class="col-sm-10">
+                  <input type="text" readonly class="form-control-plaintext" id="staticTradeDate" value="{{ date|date:"M d, Y" }}">
+                </div>
+            </div>
+
+            {% ifnotequal total trader_total %}
+            <div class="form-group">
+                <label for="comments">Comments</label>
+                <textarea class="form-control" id="comments" name="comments" rows="3" required>{{ comments }}</textarea>
+            </div>
+
+            <input name="idx" id="idx" value="{{ idx }}" hidden>
+
+            <button class="btn btn-primary" type="submit">Submit</button>
+           {% endifnotequal %}
+        </form>
+      </div>
+    </div>
+    </div>
+{% endblock %}

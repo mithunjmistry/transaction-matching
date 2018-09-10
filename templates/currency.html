@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+        {% if error %}
+            <div class="alert alert-info" role="alert">
+              Please upload GS, SSB and Trader Balance files to see if it matches.
+            </div>
+        {% else %}
+            <h4 class="margin-bottom-two">Currency Transaction Matching</h4>
+            <div id="accordion">
+              <div class="card">
+                <div class="card-header" id="headingOne">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      GS
+                    </button>
+                  </h5>
+                </div>
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                  <div class="card-body">
+                    <table class="table">
+                          <thead class="thead-light">
+                            <tr>
+                              <th scope="col">Currency</th>
+                              <th scope="col">Balance</th>
+                              <th scope="col">Water Island Balance</th>
+                              <th scope="col">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          {% for g in gs %}
+                            <tr>
+                              <td>{{ g.currency }}</td>
+                              <td>{% firstof g.balance '0.00' %}</td>
+                              <td>{% firstof g.trader_balance '0.00' %}</td>
+                              <td>
+                                  {% ifequal g.balance g.trader_balance %}
+                                    <span class="matched-transaction">matched</span>
+                                {% else %}
+                                    <span class="unmatched-transaction">not matched</span>
+                                {% endifequal %}
+                              </td>
+                            </tr>
+                          {% endfor %}
+                          </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header" id="headingTwo">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                      SSB
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                  <div class="card-body">
+                    <table class="table">
+                          <thead class="thead-light">
+                            <tr>
+                              <th scope="col">Currency</th>
+                              <th scope="col">Balance</th>
+                              <th scope="col">Water Island Balance</th>
+                              <th scope="col">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          {% for s in ssb %}
+                            <tr>
+                              <td>{{ s.currency }}</td>
+                              <td>{% firstof s.balance '0.00' %}</td>
+                              <td>{% firstof s.trader_balance '0.00' %}</td>
+                              <td>
+                                {% ifequal s.balance s.trader_balance %}
+                                    <span class="matched-transaction">matched</span>
+                                {% else %}
+                                    <span class="unmatched-transaction">not matched</span>
+                                {% endifequal %}
+                              </td>
+                            </tr>
+                          {% endfor %}
+                          </tbody>
+                        </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}
