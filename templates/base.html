@@ -20,6 +20,7 @@
     <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
     <script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js" data-auto-replace-svg="nest"></script>
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
     <script type="application/javascript">
         $.ajaxSetup({
             headers: { "X-CSRFToken": "{{ csrf_token }}" },
@@ -46,6 +47,9 @@
       </li>
       <li class="nav-item {% if request.resolver_match.url_name == "institution" %}active{% endif %}">
         <a class="nav-link" href="/institution">Institution Matching</a>
+      </li>
+      <li class="nav-item {% if request.resolver_match.url_name == "summary" %}active{% endif %}">
+        <a class="nav-link" href="/summary">Summary</a>
       </li>
     </ul>
   </div>

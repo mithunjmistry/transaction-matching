@@ -4,6 +4,8 @@ from waterisland.models import *
 import pandas as pd
 from django import template
 from django.db import connections, transaction
+import datetime
+from django.db.models import F
 from django.core.cache import cache
 
 GS = 1
@@ -183,8 +185,29 @@ def institution_matching(request):
     return render(request, "institution.html", {'error': error, 'ssb': ssb, 'gs': gs})
 
 
-def test(request):
-    return render(request, "test.html")
+def summary(request):
+    matched_transactions = Transactions.objects.filter(total__exact=F('trader_total'))
+    unmatched_transactions = Transactions.objects.exclude(total__exact=F('trader_total'))
+    dates = Transactions.objects.values('date').distinct().order_by('date')
+    mt = list()
+    umt = list()
+    categories = list()
+    for date in dates:
+        matched = matched_transactions.filter(date=date['date']).count()
+        unmatched = unmatched_transactions.filter(date=date['date']).count()
+        total = matched + unmatched
+        mt.append(int(matched/total * 100))
+        umt.append(int(unmatched/total * 100))
+        categories.append(date['date'].strftime("%Y-%m-%d"))
+    balances_gs = Balances.objects.filter(vendor=GS)
+    balances_ssb = Balances.objects.filter(vendor=SSB)
+    matched_balances = [balances_gs.filter(trader_balance__exact=F('balance')).count(),
+                        balances_ssb.filter(trader_balance__exact=F('balance')).count()]
+    unmatched_balances = [balances_gs.exclude(trader_balance__exact=F('balance')).count(),
+                          balances_ssb.exclude(trader_balance__exact=F('balance')).count()]
+    return render(request, "test.html", {'mt': mt, 'umt': umt, 'categories': categories,
+                                         'matched_balances': matched_balances,
+                                         'unmatched_balances': unmatched_balances})
 
 
 def transaction_detail(request, id):
