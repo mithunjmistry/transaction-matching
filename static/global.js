@@ -22,11 +22,15 @@ $(document).ready(function(){
         function (settings, data, dataIndex) {
             var min = $('#min').datepicker("getDate");
             var max = $('#max').datepicker("getDate");
+            var ts = $('#ts1').find(":selected").text();
             var startDate = new Date(data[4]);
-            if (min == null && max == null) { return true; }
-            if (min == null && startDate <= max) { return true;}
-            if(max == null && startDate >= min) {return true;}
-            if (startDate <= max && startDate >= min) { return true; }
+            var transactionStatus = data[3].toString();
+            var temp = true;
+            if(ts !== "All") {temp = transactionStatus === ts;}
+            if (min == null && max == null) { return temp; }
+            if (min == null && startDate <= max) { return temp;}
+            if(max == null && startDate >= min) {return temp;}
+            if (startDate <= max && startDate >= min) { return temp; }
             return false;
         }
         );
@@ -37,7 +41,7 @@ $(document).ready(function(){
         var table = $('#example').DataTable();
 
         // Event listener to the two range filtering inputs to redraw on input
-        $('#min, #max').change(function () {
+        $('#min, #max, #ts1').change(function () {
             table.draw();
         });
 
