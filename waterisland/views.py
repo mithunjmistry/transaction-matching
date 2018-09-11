@@ -205,9 +205,12 @@ def summary(request):
                         balances_ssb.filter(trader_balance__exact=F('balance')).count()]
     unmatched_balances = [balances_gs.exclude(trader_balance__exact=F('balance')).count(),
                           balances_ssb.exclude(trader_balance__exact=F('balance')).count()]
+    remaining_files = AllFiles.objects.filter(uploaded=0)
+    no_remaining_files = remaining_files.count() == 0
     return render(request, "test.html", {'mt': mt, 'umt': umt, 'categories': categories,
                                          'matched_balances': matched_balances,
-                                         'unmatched_balances': unmatched_balances})
+                                         'unmatched_balances': unmatched_balances,
+                                         'no_remaining_files': no_remaining_files})
 
 
 def transaction_detail(request, id):

@@ -1,95 +1,101 @@
 {% extends "base.html" %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-lg-7 col-md-7">
-            <div id="container"></div>
+    {% if no_remaining_files %}
+        <div class="row">
+            <div class="col-lg-7 col-md-7">
+                <div id="container"></div>
+            </div>
+
+            <div class="col-lg-5 col-md-5">
+                <div id="container2"></div>
+            </div>
         </div>
+        <script>
+          Highcharts.chart('container', {
+              chart: {
+                  type: 'column'
+              },
+              title: {
+                  text: 'Institute Transactions matched by Date(s) in Percentage'
+              },
+              xAxis: {
+                  categories: {{ categories|safe }}
+              },
+              series: [{
+                  name: 'Matched',
+                  data: {{ mt }},
+                  color: 'green'
+              }, {
+                  name: 'Not Matched',
+                  data: {{ umt }},
+                  color: '#cc0000'
+              }]
+          });
 
-        <div class="col-lg-5 col-md-5">
-            <div id="container2"></div>
-        </div>
-    </div>
-    <script>
-      Highcharts.chart('container', {
-          chart: {
-              type: 'column'
-          },
-          title: {
-              text: 'Institute Transactions matched by Date(s) in Percentage'
-          },
-          xAxis: {
-              categories: {{ categories|safe }}
-          },
-          series: [{
-              name: 'Matched',
-              data: {{ mt }},
-              color: 'green'
-          }, {
-              name: 'Not Matched',
-              data: {{ umt }},
-              color: '#cc0000'
-          }]
-      });
+          Highcharts.setOptions({
+             colors: ['green', '#cc0000']
+            });
 
-      Highcharts.setOptions({
-         colors: ['green', '#cc0000']
-        });
-
-        Highcharts.chart('container2', {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Currency Balances matching by Account'
-            },
-            xAxis: {
-                categories: ['GS', 'SSB']
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Total fruit consumption'
+            Highcharts.chart('container2', {
+                chart: {
+                    type: 'column'
                 },
-                stackLabels: {
-                    enabled: true,
-                    style: {
-                        fontWeight: 'bold',
-                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                    }
-                }
-            },
-            legend: {
-                align: 'right',
-                x: -30,
-                verticalAlign: 'top',
-                y: 25,
-                floating: true,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-                borderColor: '#CCC',
-                borderWidth: 1,
-                shadow: false
-            },
-            tooltip: {
-                headerFormat: '<b>{point.x}</b><br/>',
-                pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
-            },
-            plotOptions: {
-                column: {
-                    stacking: 'normal',
-                    dataLabels: {
+                title: {
+                    text: 'Currency Balances matching by Account'
+                },
+                xAxis: {
+                    categories: ['GS', 'SSB']
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Total fruit consumption'
+                    },
+                    stackLabels: {
                         enabled: true,
-                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                        style: {
+                            fontWeight: 'bold',
+                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                        }
                     }
-                }
-            },
-            series: [{
-                name: 'Matched',
-                data: {{ matched_balances }}
-            }, {
-                name: 'Not Matched',
-                data: {{ unmatched_balances }}
-            }]
-        });
-    </script>
+                },
+                legend: {
+                    align: 'right',
+                    x: -30,
+                    verticalAlign: 'top',
+                    y: 25,
+                    floating: true,
+                    backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                    borderColor: '#CCC',
+                    borderWidth: 1,
+                    shadow: false
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true,
+                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Matched',
+                    data: {{ matched_balances }}
+                }, {
+                    name: 'Not Matched',
+                    data: {{ unmatched_balances }}
+                }]
+            });
+        </script>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+          Please upload all 6 files to view graphical summary.
+        </div>
+    {% endif %}
 {% endblock %}
